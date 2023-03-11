@@ -6,7 +6,6 @@
 > Configuration for better Powershell using oh-my-posh and packages
 
 - Install NerdFont - Hack NF
-
 - Setting
 
 ```powershell
@@ -32,8 +31,8 @@ Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -Skip
 
 ### Neovim
 
-Referenced from devaslife  
-Configuration Neovim supporting develop including debugging below languages
+> Referenced from devaslife  
+> Configuration Neovim supporting develop including debugging below languages
 
 ![typescript](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/typescript.svg)
 ![markdown](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/markdown.svg)

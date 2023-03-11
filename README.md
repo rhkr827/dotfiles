@@ -2,15 +2,17 @@
 
 ### Powershell
 
-Refererenced from devaslife  
-Configuration for better Powershell using oh-my-posh and packages
+> Refererenced from devaslife  
+> Configuration for better Powershell using oh-my-posh and packages
 
 - Install NerdFont - Hack NF
 
-- Setting 
+- Setting
+
 ```powershell
 vim $PROFILE.CurrentUserCurrentHost
 ```
+
 - Install scoop and packages via scoop
 
 ```powershell
@@ -39,9 +41,12 @@ Configuration Neovim supporting develop including debugging below languages
 ![cpp](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/cpp.svg)
 ![python](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/python.svg)
 
-Json, cmake and Rust also support
+- Make Sync between paths
+  > Same command 'ln' in Linux system
 
-- Plugins List
 ```powershell
  New-Item -ItemType SymbolicLink -Path "C:\Users\user\AppData\Local\nvim" -Target "D:\Repository\dotfile\nvim"
 ```
+
+- Plugins List
+  > Will be updated after modifying

@@ -2,7 +2,7 @@
 # Setting
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-# Set Module
+# Set Modules
 Import-Module posh-git
 $omp_config = Join-Path $PSScriptRoot ".\my.omp.json"
 oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression

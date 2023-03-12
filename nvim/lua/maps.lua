@@ -40,3 +40,5 @@ keymap.set('', '<leader>cq', ':CMakeClose<cr>')
 keymap.set('', '<leader>cc', ':CMakeClean<cr>')
 -- GTest
 keymap.set('', '<Leader>gt', ":GTestRunUnderCursor<cr>")
+-- Notification
+keymap.set('n', ';n', "<cmd>require('telescope').load_extension('notify')<cr>")

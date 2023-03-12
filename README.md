@@ -6,10 +6,19 @@
 > Configuration for better Powershell using oh-my-posh and packages
 
 - Install NerdFont - Hack NF
-- Setting
+- Setting to excuting user_profile.ps1 when startup
 
 ```powershell
 vim $PROFILE.CurrentUserCurrentHost
+```
+
+then copy below
+
+```powershell
+# $CONFIG_PATH = $env:USERPROFILE\
+$CONFIG_PATH = {your path} ex) "D:\Repository\dotfiles\"
+$USR_PROFILE = "powershell\user_profile.ps1"
+. $CONFIG_PATH$USR_PROFILE
 ```
 
 - Install scoop and packages via scoop

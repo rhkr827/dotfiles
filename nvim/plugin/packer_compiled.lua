@@ -109,6 +109,16 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\dashboard-nvim",
     url = "https://github.com/glepnir/dashboard-nvim"
   },
+  dotfiles = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\dotfiles",
+    url = "https://github.com/nicknisi/dotfiles"
+  },
+  ["fzf.vim"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\fzf.vim",
+    url = "https://github.com/junegunn/fzf.vim"
+  },
   ["git.nvim"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\git.nvim",
@@ -169,6 +179,11 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
   },
+  ["nvim-bqf"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-bqf",
+    url = "https://github.com/kevinhwang91/nvim-bqf"
+  },
   ["nvim-bufferline.lua"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-bufferline.lua",
@@ -198,6 +213,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-notify"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-notify",
+    url = "https://github.com/rcarriga/nvim-notify"
   },
   ["nvim-tree.lua"] = {
     loaded = true,
@@ -264,15 +284,15 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
   },
+  ultisnips = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\ultisnips",
+    url = "https://github.com/SirVer/ultisnips"
+  },
   ["vim-airline"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-airline",
     url = "https://github.com/vim-airline/vim-airline"
-  },
-  ["vim-clang-format"] = {
-    loaded = true,
-    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-clang-format",
-    url = "https://github.com/rhysd/vim-clang-format"
   },
   ["vim-cmake"] = {
     loaded = true,

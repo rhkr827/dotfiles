@@ -31,10 +31,12 @@ packer.startup(function(use)
   use 'nvim-lua/plenary.nvim'     -- Common utilities
   use 'onsails/lspkind-nvim'      -- vscode-like pictograms
   use 'norcalli/nvim-colorizer.lua'
-  use 'folke/zen-mode.nvim'
-  use 'akinsho/nvim-bufferline.lua' -- TabPage Integration
   use 'vim-airline/vim-airline'
-  use 'glepnir/dashboard-nvim'      -- Dashbord
+  use 'glepnir/dashboard-nvim' -- Dashbord
+  use 'folke/which-key.nvim'
+  use 'rcarriga/nvim-notify'   -- GUI style notification
+  use 'ahmedkhalf/project.nvim'
+  use 'nicknisi/dotfiles'
 
   -- CMP (Completion)
   use 'hrsh7th/cmp-buffer'   -- nvim-cmp source for buffer words
@@ -63,14 +65,21 @@ packer.startup(function(use)
     tag = 'nightly'
   }
 
-  -- nvim-telescope
-  use({
-    "nvim-telescope/telescope.nvim",
-    tag = "0.1.0",
-    requires = { { "nvim-lua/plenary.nvim" } },
-  })
-  use 'nvim-telescope/telescope-file-browser.nvim'
-  use 'nvim-telescope/telescope-project.nvim'
+  -- Telescope
+  use "nvim-telescope/telescope.nvim"
+  -- Telescope Extensions
+  use "cljoly/telescope-repo.nvim"
+  use { "nvim-telescope/telescope-file-browser.nvim" }
+  use { "nvim-telescope/telescope-ui-select.nvim" }
+  use "dhruvmanila/telescope-bookmarks.nvim"
+  use "nvim-telescope/telescope-github.nvim"
+  use { "LinArcX/telescope-command-palette.nvim" }
+  use {
+    "AckslD/nvim-neoclip.lua",
+    config = function() require("neoclip").setup() end,
+  }
+  use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
+  use "jvgrootveld/telescope-zoxide"
 
   -- git
   use 'lewis6991/gitsigns.nvim'
@@ -89,6 +98,7 @@ packer.startup(function(use)
   use 'antoinemadec/FixCursorHold.nvim'
 
   -- support development
+  use 'junegunn/fzf.vim'
   use { 'numToStr/Comment.nvim',
     requires = {
       'JoosepAlviste/nvim-ts-context-commentstring'
@@ -98,10 +108,9 @@ packer.startup(function(use)
   use 'windwp/nvim-ts-autotag'
   use 'preservim/tagbar'        -- overview of currentf file's structure
   use "akinsho/toggleterm.nvim" -- toggle terminal
-  use 'folke/which-key.nvim'
-  use 'ahmedkhalf/project.nvim'
   use 'wakatime/vim-wakatime'
-  use 'rhysd/vim-clang-format'
+  use 'SirVer/ultisnips'        -- snippet insertion
+  use 'kevinhwang91/nvim-bqf'   -- quick fix list
 
   if packer_bootstrap then
     packer.sync()

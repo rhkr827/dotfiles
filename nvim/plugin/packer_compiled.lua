@@ -89,11 +89,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
-  ["alpha-nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\alpha-nvim",
-    url = "https://github.com/goolord/alpha-nvim"
-  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-buffer",
@@ -108,6 +103,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\colorbuddy.nvim",
     url = "https://github.com/tjdevries/colorbuddy.nvim"
+  },
+  ["dashboard-nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\dashboard-nvim",
+    url = "https://github.com/glepnir/dashboard-nvim"
   },
   ["git.nvim"] = {
     loaded = true,
@@ -144,25 +144,20 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\mason-lspconfig.nvim",
     url = "https://github.com/williamboman/mason-lspconfig.nvim"
   },
+  ["mason-nvim-dap.nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\mason-nvim-dap.nvim",
+    url = "https://github.com/jay-babu/mason-nvim-dap.nvim"
+  },
   ["mason.nvim"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
-  ["neo-tree.nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\neo-tree.nvim",
-    url = "https://github.com/nvim-neo-tree/neo-tree.nvim"
-  },
   ["neosolarized.nvim"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\neosolarized.nvim",
     url = "https://github.com/svrana/neosolarized.nvim"
-  },
-  ["nui.nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nui.nvim",
-    url = "https://github.com/MunifTanjim/nui.nvim"
   },
   ["null-ls.nvim"] = {
     loaded = true,
@@ -274,6 +269,11 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-airline",
     url = "https://github.com/vim-airline/vim-airline"
   },
+  ["vim-clang-format"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-clang-format",
+    url = "https://github.com/rhysd/vim-clang-format"
+  },
   ["vim-cmake"] = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-cmake",
@@ -283,11 +283,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-gtest",
     url = "https://github.com/alepez/vim-gtest"
-  },
-  ["vim-prettier"] = {
-    loaded = true,
-    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-prettier",
-    url = "https://github.com/prettier/vim-prettier"
   },
   ["vim-wakatime"] = {
     loaded = true,

@@ -80,20 +80,42 @@ local opts = {
 
 local mappings = {
   ["a"] = { "<cmd>Dashboard<cr>", "Dashboard" },
-  ["b"] = {
-    "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Buffers",
-  },
   ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["w"] = { "<cmd>w!<CR>", "Save" },
-  ["q"] = { "<cmd>q!<CR>", "Quit" },
-  ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-  ["f"] = {
-    "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Find files",
+  ["q"] = { "<cmd>quitall<CR>", "Quit" },
+  b = {
+    name = "Buffer",
+    b = {
+      "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+      "Open Buffers",
+    },
+    c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
   },
-  ["F"] = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
-  ["P"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
+  c = {
+    name = "CMake",
+    g = { "<cmd>CMakeGenerate<cr>", "CMake Generate" },
+    b = { "<cmd>CMakeBuild<cr>", "CMake Build" },
+    q = { "<cmd>CMakeClose<cr>", "CMake Close" },
+    c = { "<cmd>CMakeClean<cr>", "CMake Clean" }
+  },
+  d = {
+    name = "DAP UI",
+    t = { "<cmd>lua require('dapui').toggle{reset=true}<cr>", "Toggle DAP UI" },
+    a = { "<cmd>lua require('dapui').elements.watches.add<cr>", "Add Watches" },
+    e = { "<cmd>lua require('dapui').eval()<cr>", "Evaluate" },
+    f = { "<cmd>lua require('dapui').float_element()<cr>", "Float Element" },
+    s = { "<cmd>lua require('dapui').float_element('scopes')<cr>", "Scopes" },
+    w = { "<cmd>lua require('dapui').float_element('watches')<cr>", "Watches" },
+    k = { "<cmd>lua require('dapui').float_element('stacks')<cr>", "Stacks" },
+  },
+  f = {
+    name = "FileSystem",
+    f = {
+      "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+      "Find files" },
+    p = { "<cmd>Telescope projects<cr>", "Projects" },
+    g = { "<cmd>GitFiles", "GitFiles" },
+  },
   p = {
     name = "Packer",
     c = { "<cmd>PackerCompile<cr>", "Compile" },
@@ -110,7 +132,6 @@ local mappings = {
     l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
     p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
     r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-    R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
     s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
     u = {
       "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
@@ -138,17 +159,8 @@ local mappings = {
     f = { "<cmd>lua vim.lsp.buf.format{async=true}<cr>", "Format" },
     i = { "<cmd>LspInfo<cr>", "Info" },
     I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
-    j = {
-      "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>",
-      "Next Diagnostic",
-    },
-    k = {
-      "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>",
-      "Prev Diagnostic",
-    },
     l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
     q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-    r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
     S = {
       "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
@@ -157,12 +169,8 @@ local mappings = {
   },
   s = {
     name = "Search",
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
     h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
     r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-    R = { "<cmd>Telescope registers<cr>", "Registers" },
     k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
     C = { "<cmd>Telescope commands<cr>", "Commands" },
   },

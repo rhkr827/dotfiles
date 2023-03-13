@@ -13,6 +13,7 @@ db.setup({
     week_header = {
       enable = true,
     },
+    packages = { enable = true },
     shortcut = {
       {
         desc = " Files",
@@ -23,7 +24,7 @@ db.setup({
       {
         desc = " Projects",
         group = "Number",
-        action = "lua require('telescope').extensions.projects.projects()",
+        action = "Telescope projects",
         key = "p",
       },
       {
@@ -39,5 +40,8 @@ db.setup({
         key = "d",
       },
     },
+    project = { enable = false, limit = 10, icon = '', label = '  Recent Projects', action = 'Telescope projects' },
+    mru = { enable = true, limit = 10, icon = '', label = '  Most Recent Files' },
+    footer = {},
   },
 })

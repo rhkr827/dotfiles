@@ -1,12 +1,6 @@
 # TODO
 
-[ ] Configure dashboard
-
-> Support list recent project  
-> Relace shortcuts
-
-- find files to git repo from telescope-repo
-- projects to Maven
+[X] Configure dashboard
 
 [ ] Configure telescope
 
@@ -15,7 +9,7 @@
 
 - fuzzy repo git etc..
 
-[ ] Configure keymap
+[x] Configure keymap
 
 > remove unnessary keymap in whichkey
 
@@ -25,7 +19,7 @@
 - relaced in search files, project and text in files using telescope extensions
 - dap, dapui, cmake, git and markdown preview
 
-[ ] Replace dapui layout
+[x] Replace dapui layout
 
 > change to float style
 
@@ -33,6 +27,6 @@
 - bottom left : breakpoint
 - bottom right : output
 
-[ ] Configure command windows
+[x] Configure command windows
 
 > set to float on center

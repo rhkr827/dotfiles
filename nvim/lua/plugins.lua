@@ -23,20 +23,17 @@ packer.startup(function(use)
   use 'windwp/nvim-autopairs'
 
   -- UI
-  use {
-    'svrana/neosolarized.nvim',
-    requires = { 'tjdevries/colorbuddy.nvim' }
-  }
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim'     -- Common utilities
   use 'onsails/lspkind-nvim'      -- vscode-like pictograms
-  use 'norcalli/nvim-colorizer.lua'
   use 'vim-airline/vim-airline'
-  use 'glepnir/dashboard-nvim' -- Dashbord
+  use 'glepnir/dashboard-nvim'    -- Dashbord
   use 'folke/which-key.nvim'
-  use 'rcarriga/nvim-notify'   -- GUI style notification
+  use 'rcarriga/nvim-notify'      -- GUI style notification
   use 'ahmedkhalf/project.nvim'
   use 'nicknisi/dotfiles'
+  use 'EdenEast/nightfox.nvim' -- theme
+  use 'gelguy/wilder.nvim'     -- cmdline autocomplete
 
   -- CMP (Completion)
   use 'hrsh7th/cmp-buffer'   -- nvim-cmp source for buffer words
@@ -83,10 +80,15 @@ packer.startup(function(use)
 
   -- git
   use 'lewis6991/gitsigns.nvim'
-  use 'dinhhuy258/git.nvim' -- for git blame & browse
 
-  -- debugging
-  use { 'jay-babu/mason-nvim-dap.nvim', requires = { 'mfussenegger/nvim-dap', 'rcarriga/nvim-dap-ui' } }
+  -- DAP
+  use({
+    "mfussenegger/nvim-dap",
+    requires = {
+      { "rcarriga/nvim-dap-ui" },
+    },
+  })
+
   use({
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
@@ -98,21 +100,12 @@ packer.startup(function(use)
   use 'antoinemadec/FixCursorHold.nvim'
 
   -- support development
-  use 'junegunn/fzf.vim'
-  use { 'numToStr/Comment.nvim',
-    requires = {
-      'JoosepAlviste/nvim-ts-context-commentstring'
-    }
-  }
+  use 'tpope/vim-commentary'
   use 'L3MON4D3/LuaSnip'        -- snippet for lua
   use 'windwp/nvim-ts-autotag'
   use 'preservim/tagbar'        -- overview of currentf file's structure
   use "akinsho/toggleterm.nvim" -- toggle terminal
   use 'wakatime/vim-wakatime'
-  use 'SirVer/ultisnips'        -- snippet insertion
-  use 'kevinhwang91/nvim-bqf'   -- quick fix list
 
-  if packer_bootstrap then
-    packer.sync()
-  end
+  use 'SirVer/ultisnips' -- snippet insertion
 end)

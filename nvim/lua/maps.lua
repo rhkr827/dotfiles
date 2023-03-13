@@ -20,25 +20,18 @@ keymap.set('n', 'te', ':tabedit')
 -- Split window
 keymap.set('n', 'ss', ':split<Return><C-w>w')
 keymap.set('n', 'sv', ':vsplit<Return><C-w>w')
+
 -- Move window
 keymap.set('n', '<Space>', '<C-w>w')
+
 -- Resize window
 keymap.set('n', '<C-w><left>', '<C-w><')
 keymap.set('n', '<C-w><right>', '<C-w>>')
 keymap.set('n', '<C-w><up>', '<C-w>+')
 keymap.set('n', '<C-w><down>', '<C-w>-')
+
 -- Nvim Tree
 keymap.set('n', '<Leader>e', ':NvimTreeToggle<cr>')
 
-
 -- TagBar
 keymap.set('n', '<F8>', ':TagbarToggle<cr>')
--- CMake
-keymap.set('', '<leader>cg', ':CMakeGenerate<cr>')
-keymap.set('', '<leader>cb', ':CMakeBuild<cr>')
-keymap.set('', '<leader>cq', ':CMakeClose<cr>')
-keymap.set('', '<leader>cc', ':CMakeClean<cr>')
--- GTest
-keymap.set('', '<Leader>gt', ":GTestRunUnderCursor<cr>")
--- Notification
-keymap.set('n', ';n', "<cmd>require('telescope').load_extension('notify')<cr>")

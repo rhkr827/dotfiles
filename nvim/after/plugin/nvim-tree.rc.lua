@@ -1,10 +1,5 @@
-local status_ok, nvim_tree = pcall(require, "nvim-tree")
-if not status_ok then
-  return
-end
-
-local config_status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
-if not config_status_ok then
+local status, nvim_tree = pcall(require, "nvim-tree")
+if not status then
   return
 end
 
@@ -20,7 +15,7 @@ nvim_tree.setup {
     root_folder_modifier = ":t",
     icons = {
       glyphs = {
-        default = "",
+        default = "",
         symlink = "",
         folder = {
           arrow_open = "",
@@ -33,8 +28,8 @@ nvim_tree.setup {
           symlink_open = "",
         },
         git = {
-          unstaged = "",
-          staged = "S",
+          unstaged = "✗",
+          staged = "✓",
           unmerged = "",
           renamed = "➜",
           untracked = "U",
@@ -81,5 +76,11 @@ nvim_tree.setup {
     width = function()
       return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
     end,
-  },
+    mappings = {
+      list = {
+        {
+          key = "<ESC>", cb = "<cmd>NvimTreeClose<cr>" },
+      },
+    },
+  }
 }

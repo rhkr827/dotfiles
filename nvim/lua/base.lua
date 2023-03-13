@@ -16,11 +16,6 @@ vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
 vim.opt.expandtab = true
 vim.opt.scrolloff = 10
--- if vim.fn.has "win32" then
---   vim.opt.shell = 'pwsh.exe'
--- else
---   vim.opt.shell = 'fish'
--- end
 vim.opt.backupskip = { '/tmp/*', '/private/tmp/*' }
 vim.opt.inccommand = 'split'
 vim.opt.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
@@ -45,3 +40,6 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 
 -- Add asterisks in block comments
 vim.opt.formatoptions:append { 'r' }
+
+-- Set theme
+vim.cmd("colorscheme nightfox")

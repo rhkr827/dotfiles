@@ -35,3 +35,6 @@ keymap.set('n', '<Leader>e', ':NvimTreeToggle<cr>')
 
 -- TagBar
 keymap.set('n', '<F8>', ':TagbarToggle<cr>')
+
+-- MarkdownPreview
+keymap.set('n', 'mp', ':MarkdownPreview<cr>')

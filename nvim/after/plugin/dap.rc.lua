@@ -35,8 +35,7 @@ dapui.setup({
     --   position = "left",
     -- },
     {
-      -- elements = { "repl", "console" },
-      elements = { "console" },
+      elements = { "console", "repl" },
       size = 0.30,
       position = "bottom",
     },
@@ -68,12 +67,6 @@ dap.adapters.python = {
   args = { '-m', 'debugpy.adapter' }
 }
 
-dap.adapters.cppdbg = {
-  id = 'cppdbg',
-  type = 'executable',
-  command = vim.fn.stdpath('data') .. '/mason/bin/OpenDebugAD7',
-}
-
 dap.adapters.coreclr = {
   type = 'executable',
   command = vim.fn.stdpath('data') .. '/mason/bin/netcoredbg',
@@ -88,15 +81,32 @@ dap.adapters.dart = {
 }
 
 dap.adapters.lldb = {
-  type = "executable",
-  attach = { pidProperty = "pid", pidSelect = "ask" },
-  command = "lldb-vscode",
-  env = { LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES" },
+  type = 'executable',
+  command = vim.fn.stdpath('data') .. '/mason/bin/OpenDebugAD7',
+  args = { '--interpreter=vscode' }
 }
 
+dap.adapters.codelldb = {
+  type = 'executable',
+  command = vim.fn.stdpath('data') .. '/mason/package/codelldb/extentions/adapter/codelldb',
+  args = { '--interpreter=vscode' }
+}
+
+dap.adapters.dart = {
+  type = "executable",
+  command = "node",
+  args = { vim.fn.stdpath('data') .. "/mason/bin/dart-debug-adapter",
+    "flutter" }
+}
+
+
+dap.adapters.cpp = dap.adapters.codelldb
 dap.adapters.rust = dap.adapters.lldb
 
 -- DAP Configurations
+
+dap.defaults.fallback.terminal_win_cmd = "10split new"
+
 dap.configurations.python = {
   {
     type = 'python',
@@ -115,17 +125,6 @@ dap.configurations.python = {
       end
     end,
   },
-}
-
-dap.adapters.cppdbg = {
-  name = "Launch",
-  type = "cpptools",
-  request = "launch",
-  program = '${workspaceFolder}/main',
-  cwd = '${workspaceFolder}',
-  stopOnEntry = true,
-  args = {},
-  runInTerminal = false,
 }
 
 dap.configurations.cs = {
@@ -151,20 +150,38 @@ dap.configurations.cs = {
 --   }
 -- }
 
-dap.configurations.rust = {
+local file = require("config.file")
+dap.configurations.cpp = {
   {
-    type = "rust",
+    name = "C++ Debug And Run",
+    type = "codelldb",
     request = "launch",
-    name = "lldb",
     program = function()
-      local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
-      local metadata = vim.fn.json_decode(metadata_json)
-      local target_name = metadata.packages[1].targets[1].name
-      local target_dir = metadata.target_directory
-      return target_dir .. "/debug/" .. target_name
+      -- First, check if exists CMakeLists.txt
+      local cwd = vim.fn.getcwd()
+      if file.exists(cwd, "CMakeLists.txt") then
+        -- Then invoke cmake commands
+        -- Then ask user to provide execute file
+        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      else
+        local fileName = vim.fn.expand("%:t:r")
+        -- create this directory
+        os.execute("mkdir -p " .. "bin")
+        local cmd = "!g++ -g % -o bin/" .. fileName
+        -- First, compile it
+        vim.cmd(cmd)
+        -- Then, return it
+        return "${fileDirname}/bin/" .. fileName
+      end
     end,
+    cwd = "${workspaceFolder}",
+    stopOnEntry = false,
+    runInTerminal = true,
+    console = "integratedTerminal",
   },
 }
+-- If you want to use this for Rust and C, add something like this:
+dap.configurations.rust = dap.configurations.cpp
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()

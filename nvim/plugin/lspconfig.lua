@@ -129,6 +129,40 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
+-- python
+nvim_lsp.pyright.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+-- c++
+nvim_lsp.cmake.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+nvim_lsp.cmake.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+nvim_lsp.clangd.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+-- csharp
+nvim_lsp.csharp_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+-- dart
+nvim_lsp.dartls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
 -- Diagnostic symbols in the sign column (gutter)
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do

@@ -3,70 +3,22 @@ if not status_ok then
   return
 end
 
+
 local setup = {
-  plugins = {
-    marks = true,       -- shows a list of your marks on ' and `
-    registers = true,   -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-    spelling = {
-      enabled = true,   -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-      suggestions = 20, -- how many suggestions should be shown in the list?
-    },
-    -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-    -- No actual key bindings are created
-    presets = {
-      operators = false,   -- adds help for operators like d, y, ... and registers them for motion / text object completion
-      motions = true,      -- adds help for motions
-      text_objects = true, -- help for text objects triggered after entering an operator
-      windows = true,      -- default bindings on <c-w>
-      nav = true,          -- misc bindings to work with windows
-      z = true,            -- bindings for folds, spelling and others prefixed with z
-      g = true,            -- bindings for prefixed with g
-    },
-  },
-  -- add operators that will trigger motion and text object completion
-  -- to enable all native operators, set the preset / operators plugin above
-  -- operators = { gc = "Comments" },
-  key_labels = {
-    -- override the label used to display some keys. It doesn't effect WK in any other way.
-    -- For example:
-    -- ["<space>"] = "SPC",
-    -- ["<cr>"] = "RET",
-    -- ["<tab>"] = "TAB",
-  },
+  plugins = { spelling = false },
   icons = {
     breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     separator = "➜", -- symbol used between a key and it's label
     group = "+",      -- symbol prepended to a group
   },
-  popup_mappings = {
-    scroll_down = "<c-d>", -- binding to scroll down inside the popup
-    scroll_up = "<c-u>",   -- binding to scroll up inside the popup
-  },
   window = {
-    border = "rounded",       -- none, single, double, shadow
-    position = "bottom",      -- bottom, top
-    margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
-    padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-    winblend = 0,
-  },
-  layout = {
-    height = { min = 4, max = 25 },                                             -- min and max height of the columns
-    width = { min = 20, max = 50 },                                             -- min and max width of the columns
-    spacing = 3,                                                                -- spacing between columns
-    align = "left",                                                             -- align columns left, center or right
+    border = "rounded",                                                         -- none, single, double, shadow
+    position = "bottom",                                                        -- bottom, top
   },
   ignore_missing = true,                                                        -- enable this to hide mappings for which you didn't specify a label
   hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
   show_help = true,                                                             -- show help message on the command line when the popup is visible
   triggers = "auto",                                                            -- automatically setup triggers
-  -- triggers = {"<leader>"} -- or specify a list manually
-  triggers_blacklist = {
-    -- list of mode / prefixes that should never be hooked by WhichKey
-    -- this is mostly relevant for key maps that start with a native binding
-    -- most people should not need to change this
-    i = { "j", "k" },
-    v = { "j", "k" },
-  },
 }
 
 local opts = {
@@ -89,32 +41,43 @@ local mappings = {
       "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
       "Open Buffers",
     },
-    c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+    c = { "<cmd>bdelete!<CR>", "Close Buffer" },
   },
   c = {
     name = "CMake",
     g = { "<cmd>CMakeGenerate<cr>", "CMake Generate" },
+    x = { "<cmd>CMakeGenerate!<cr>", "CMake Clean and Generate" },
     b = { "<cmd>CMakeBuild<cr>", "CMake Build" },
-    q = { "<cmd>CMakeClose<cr>", "CMake Close" },
-    c = { "<cmd>CMakeClean<cr>", "CMake Clean" }
+    r = { "<cmd>CMakeRun<cr>", "CMake Run" },
+    d = { "<cmd>CMakeDebug<cr>", "CMake Debug" },
+    i = { "<cmd>CMakeInstall<cr>", "CMake Install" },
+    C = { "<cmd>CMakeClean<cr>", "CMake Clean" },
+    s = { "<cmd>CMakeStop<cr>", "CMake Stop" },
   },
   d = {
-    name = "DAP UI",
-    t = { "<cmd>lua require('dapui').toggle{reset=true}<cr>", "Toggle DAP UI" },
-    a = { "<cmd>lua require('dapui').elements.watches.add<cr>", "Add Watches" },
-    e = { "<cmd>lua require('dapui').eval()<cr>", "Evaluate" },
-    f = { "<cmd>lua require('dapui').float_element()<cr>", "Float Element" },
-    s = { "<cmd>lua require('dapui').float_element('scopes')<cr>", "Scopes" },
-    w = { "<cmd>lua require('dapui').float_element('watches')<cr>", "Watches" },
-    k = { "<cmd>lua require('dapui').float_element('stacks')<cr>", "Stacks" },
+    name = "DAP",
+    t = { "<cmd>lua require('dapui').toggle{reset=true}<cr>", "Toggle DAPUI" },
+    s = { "<cmd>lua require'dap.ui.widgets'.centered_float(require'dap.ui.widgets'.scopes)()<cr>", "View Current Scopes" },
+    k = { "<cmd>lua require'dap.ui.widgets'.centered_float(require'dap.ui.widgets'.stacks)()<cr>", "View Current Stacks" },
+    w = { "<cmd>lua require'dap.ui.widgets'.centered_float(require'dap.ui.widgets'.watches)()<cr>",
+      "View Current Watches" },
+    v = { "<cmd>lua require('dapui').eval()<cr>", "Evaluate" },
   },
   f = {
-    name = "FileSystem",
+    name = "Find",
     f = {
-      "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+      "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes'))<cr>",
       "Find files" },
-    p = { "<cmd>Telescope projects<cr>", "Projects" },
-    g = { "<cmd>GitFiles", "GitFiles" },
+    --s = { "<cmd>lua require'config.telescope'.grep_prompt()<cr>", "Search" },
+    e = { "<cmd>lua require'config.telescope'.file_explorer()<cr>", "File Browser" },
+    p = { "<cmd>lua require'config.telescope'.project_files()<cr>", "Project Files" },
+    r = { "<cmd>lua require'config.telescope'.repo_list()<cr>", "Repo List" },
+    c = { "<cmd>lua require'config.telescope'.find_configs()<cr>", "Find Config" },
+    v = { "<cmd>lua require'config.telescope'.nvim_config()<cr>", "Nvim Config" },
+    --l = { "<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<cr>", "Live Grep" },
+    o = { "<cmd>lua require'telescope.builtin'.oldfiles({prompt_title=':oldfiles', results_title='Old Files'})<cr>",
+      "Old Files" },
+    z = { "<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find()<cr>", "Current File Search" },
   },
   p = {
     name = "Packer",
@@ -126,7 +89,6 @@ local mappings = {
   },
   g = {
     name = "Git",
-    g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
     j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
     k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
     l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
@@ -140,41 +102,34 @@ local mappings = {
     o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
     b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
     c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-    d = {
-      "<cmd>Gitsigns diffthis HEAD<cr>",
-      "Diff",
-    },
+    f = { "<cmd>lua require'telescope.builtin'.git_bcommits({prompt_title = '  ', results_title='Git File Commits'}",
+      "Diff" }
   },
   l = {
     name = "LSP",
     a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-    d = {
-      "<cmd>Telescope diagnostics bufnr=0<cr>",
-      "Document Diagnostics",
-    },
-    w = {
-      "<cmd>Telescope diagnostics<cr>",
-      "Workspace Diagnostics",
-    },
+    w = { "<cmd>Telescope diagnostics<cr>", "Workspace Diagnostics" },
     f = { "<cmd>lua vim.lsp.buf.format{async=true}<cr>", "Format" },
-    i = { "<cmd>LspInfo<cr>", "Info" },
-    I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
+    i = { "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>", "LSP Implementations" },
+    d = { "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>", "LSP Definitions" },
     l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
     q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-    s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-    S = {
-      "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-      "Workspace Symbols",
-    },
+    s = { "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>", "Document Symbols" },
   },
-  s = {
-    name = "Search",
-    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-    C = { "<cmd>Telescope commands<cr>", "Commands" },
+  h = {
+    name = "Help",
+    r = { "<cmd>lua require'telescope.builtin'.registers()<cr>", "Resisters" },
+    d = { "<cmd>lua require'telescope.builtin'.diagnostics()<cr>", "Diagnostics" },
+    c = { "<cmd>lua require('telescope').extensions.command_palette.command_palette()<cr>", "Command Palette" },
+    z = {
+      "<cmd>lua require'telescope'.extensions.zoxide.list{results_title='Z Directories', prompt_title='Z Prompt'}<cr>",
+      "Z Prompt" },
+    h = {
+      "<cmd>lua require('telescope').extensions.notify.notify({results_title='Notification History', prompt_title='Search Messages'})<cr>",
+      "Notification History" },
   },
 }
+
 
 which_key.setup(setup)
 which_key.register(mappings, opts)

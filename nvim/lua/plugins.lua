@@ -1,21 +1,27 @@
-local status, packer = pcall(require, "packer")
+local status, packer = pcall(require, 'packer')
 if (not status) then
-  print("Packer is not installed")
+  print('Packer is not installed')
   return
 end
 
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+local fn = vim.fn
+local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+if fn.empty(fn.glob(install_path)) > 0 then
+  PACKER_BOOTSTRAP = fn.system {
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  }
 end
 
-local packer_bootstrap = ensure_packer()
+vim.api.nvim_create_augroup("SyncPackerPlugins", {})
+vim.api.nvim_create_autocmd(
+  "BufWritePost",
+  { command = "source <afile> | PackerSync", pattern = "plugins.lua", group = "SyncPackerPlugins" }
+)
 
 packer.startup(function(use)
   -- Plugin Installer
@@ -32,8 +38,8 @@ packer.startup(function(use)
   use 'rcarriga/nvim-notify'      -- GUI style notification
   use 'ahmedkhalf/project.nvim'
   use 'nicknisi/dotfiles'
-  use 'EdenEast/nightfox.nvim' -- theme
   use 'gelguy/wilder.nvim'     -- cmdline autocomplete
+  use 'EdenEast/nightfox.nvim' --theme
 
   -- CMP (Completion)
   use 'hrsh7th/cmp-buffer'   -- nvim-cmp source for buffer words
@@ -62,50 +68,60 @@ packer.startup(function(use)
     tag = 'nightly'
   }
 
+  -- fzf
+  use { 'junegunn/fzf', run = ":call fzf#install()" }
+  use { 'junegunn/fzf.vim' }
+
   -- Telescope
-  use "nvim-telescope/telescope.nvim"
-  -- Telescope Extensions
-  use "cljoly/telescope-repo.nvim"
-  use { "nvim-telescope/telescope-file-browser.nvim" }
-  use { "nvim-telescope/telescope-ui-select.nvim" }
-  use "dhruvmanila/telescope-bookmarks.nvim"
-  use "nvim-telescope/telescope-github.nvim"
-  use { "LinArcX/telescope-command-palette.nvim" }
-  use {
-    "AckslD/nvim-neoclip.lua",
-    config = function() require("neoclip").setup() end,
+  use { 'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-telescope/telescope-ui-select.nvim',
+      'nvim-telescope/telescope-dap.nvim',
+      'cljoly/telescope-repo.nvim',
+      'LinArcX/telescope-command-palette.nvim',
+      'nvim-telescope/telescope-file-browser.nvim',
+      'jvgrootveld/telescope-zoxide',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        run =
+        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+      }
+    },
   }
-  use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-  use "jvgrootveld/telescope-zoxide"
 
   -- git
   use 'lewis6991/gitsigns.nvim'
 
   -- DAP
-  use({
-    "mfussenegger/nvim-dap",
+  use { 'mfussenegger/nvim-dap',
     requires = {
-      { "rcarriga/nvim-dap-ui" },
-    },
-  })
+      'theHamsta/nvim-dap-virtual-text',
+      'rcarriga/nvim-dap-ui', }
+  }
 
   use({
-    "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
+    'iamcco/markdown-preview.nvim',
+    run = function() vim.fn['mkdp#util#install']() end,
   })
 
   -- c++ development
-  use 'cdelledonne/vim-cmake'
+  use 'Civitasv/cmake-tools.nvim'
   use 'alepez/vim-gtest'
-  use 'antoinemadec/FixCursorHold.nvim'
+  use 'rhysd/vim-clang-format'
 
   -- support development
   use 'tpope/vim-commentary'
   use 'L3MON4D3/LuaSnip'        -- snippet for lua
   use 'windwp/nvim-ts-autotag'
   use 'preservim/tagbar'        -- overview of currentf file's structure
-  use "akinsho/toggleterm.nvim" -- toggle terminal
+  use 'akinsho/toggleterm.nvim' -- toggle terminal
   use 'wakatime/vim-wakatime'
+  use 'SirVer/ultisnips'        -- snippet insertion
 
-  use 'SirVer/ultisnips' -- snippet insertion
+  if PACKER_BOOTSTRAP then
+    print('Changed plugins. Execute PackerSync')
+    require("packer").sync()
+  else
+    print('None of changed plugins.')
+  end
 end)

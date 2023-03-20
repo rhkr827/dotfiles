@@ -70,7 +70,7 @@ local mappings = {
       "Find files" },
     --s = { "<cmd>lua require'config.telescope'.grep_prompt()<cr>", "Search" },
     e = { "<cmd>lua require'config.telescope'.file_explorer()<cr>", "File Browser" },
-    p = { "<cmd>lua require'config.telescope'.project_files()<cr>", "Project Files" },
+    p = { "<cmd>Telescope projects<cr>", "Projects" },
     r = { "<cmd>lua require'config.telescope'.repo_list()<cr>", "Repo List" },
     c = { "<cmd>lua require'config.telescope'.find_configs()<cr>", "Find Config" },
     v = { "<cmd>lua require'config.telescope'.nvim_config()<cr>", "Nvim Config" },

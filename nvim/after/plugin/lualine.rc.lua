@@ -3,74 +3,59 @@ if not status_ok then
   return
 end
 
-local cmake = require("cmake-tools")
-local icons = require("config.icons")
-
--- Credited to [evil_lualine](https://github.com/nvim-lualine/lualine.nvim/blob/master/examples/evil_lualine.lua)
-local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-  end,
-  hide_in_width = function()
-    return vim.fn.winwidth(0) > 80
-  end,
-  check_git_workspace = function()
-    local filepath = vim.fn.expand("%:p:h")
-    local gitdir = vim.fn.finddir(".git", filepath .. ";")
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
-}
-
-local colors = {
-  bg       = "#202328",
-  fg       = "#bbc2cf",
-  yellow   = "#ECBE7B",
-  cyan     = "#008080",
-  darkblue = "#081633",
-  green    = "#98be65",
-  orange   = "#FF8800",
-  violet   = "#a9a1e1",
-  magenta  = "#c678dd",
-  blue     = "#51afef",
-  red      = "#ec5f67",
-}
-
 local config = {
   options = {
     icons_enabled = true,
-    component_separators = "",
-    section_separators = "",
-    disabled_filetypes = { "alpha", "dashboard", "Outline" },
-    always_divide_middle = true,
-    theme = {
-      -- We are going to use lualine_c an lualine_x as left and
-      -- right section. Both are highlighted by c theme .  So we
-      -- are just setting default looks o statusline
-      normal = { c = { fg = colors.fg, bg = colors.bg } },
-      inactive = { c = { fg = colors.fg, bg = colors.bg } },
-    },
+    theme = 'github_dimmed',
+    section_separators = { left = '', right = '' },
+    component_separators = { left = '', right = '' },
+    disabled_filetypes = {}
   },
   sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_y = {},
-    lualine_z = {},
-    -- c for left
-    lualine_c = {},
-    -- x for right
-    lualine_x = {},
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch' },
+    lualine_c = { {
+      'filename',
+      file_status = true, -- displays file status (readonly status, modified status)
+      path = 0            -- 0 = just filename, 1 = relative path, 2 = absolute path
+    } },
+    lualine_x = {
+      {
+        'diagnostics',
+        sources = { "nvim_diagnostic" },
+        symbols = {
+          error = ' ',
+          warn = ' ',
+          info = ' ',
+          hint = ' '
+        }
+      },
+      'encoding',
+      'filetype'
+    },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' }
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
+    lualine_c = { {
+      'filename',
+      file_status = true, -- displays file status (readonly status, modified status)
+      path = 1            -- 0 = just filename, 1 = relative path, 2 = absolute path
+    } },
+    lualine_x = { 'location' },
     lualine_y = {},
-    lualine_z = {},
-    lualine_c = { "filename" },
-    lualine_x = { "location" },
+    lualine_z = {}
   },
   tabline = {},
-  extensions = {},
+  extensions = { 'fugitive' }
 }
+
+-- CMake settings
+
+local cmake = require("cmake-tools")
+local icons = require("config.icons")
 
 -- Inserts a component in lualine_c at left section
 local function ins_left(component)
@@ -81,73 +66,6 @@ end
 local function ins_right(component)
   table.insert(config.sections.lualine_x, component)
 end
-
-ins_left {
-  function()
-    return icons.ui.Line
-  end,
-  color = { fg = colors.blue },      -- Sets highlighting of component
-  padding = { left = 0, right = 1 }, -- We don't need space before this
-}
-
-ins_left {
-  -- mode component
-  function()
-    return icons.ui.Evil
-  end,
-  color = function()
-    -- auto change color according to neovims mode
-    local mode_color = {
-      n = colors.red,
-      i = colors.green,
-      v = colors.blue,
-      ["�"] = colors.blue,
-      V = colors.blue,
-      c = colors.magenta,
-      no = colors.red,
-      s = colors.orange,
-      S = colors.orange,
-      ["�"] = colors.orange,
-      ic = colors.yellow,
-      R = colors.violet,
-      Rv = colors.violet,
-      cv = colors.red,
-      ce = colors.red,
-      r = colors.cyan,
-      rm = colors.cyan,
-      ["r?"] = colors.cyan,
-      ["!"] = colors.red,
-      t = colors.red,
-    }
-    return { fg = mode_color[vim.fn.mode()] }
-  end,
-  padding = { right = 1 },
-}
-
-ins_left {
-  -- filesize component
-  "filesize",
-  cond = conditions.buffer_not_empty,
-}
-
-ins_left {
-  "filename",
-  cond = conditions.buffer_not_empty,
-  color = { fg = colors.magenta, gui = "bold" },
-}
-
-ins_left { "location" }
-
-ins_left {
-  "diagnostics",
-  sources = { "nvim_diagnostic" },
-  symbols = { error = icons.diagnostics.Error, warn = icons.diagnostics.Warning, info = icons.diagnostics.Information },
-  diagnostics_color = {
-    color_error = { fg = colors.red },
-    color_warn = { fg = colors.yellow },
-    color_info = { fg = colors.cyan },
-  },
-}
 
 ins_left {
   function()
@@ -292,75 +210,6 @@ ins_left {
       end
     end
   end
-}
-
--- Insert mid section. You can make any number of sections in neovim :)
--- for lualine it's any number greater then 2
-ins_left {
-  function()
-    return "%="
-  end,
-}
-
--- Add components to right sections
-ins_right {
-  "o:encoding",       -- option component same as &encoding in viml
-  fmt = string.upper, -- I'm not sure why it's upper case either ;)
-  cond = conditions.hide_in_width,
-  color = { fg = colors.green, gui = "bold" },
-}
-
-ins_right {
-  "fileformat",
-  fmt = string.upper,
-  icons_enabled = false,
-  color = { fg = colors.green, gui = "bold" },
-}
-
-ins_right {
-  function()
-    return vim.api.nvim_buf_get_option(0, "shiftwidth")
-  end,
-  icons_enabled = false,
-  color = { fg = colors.green, gui = "bold" },
-}
-
-ins_right {
-  "branch",
-  icon = icons.git.Branch,
-  color = { fg = colors.violet, gui = "bold" },
-}
-
-ins_right {
-  "diff",
-  -- Is it me or the symbol for modified us really weird
-  symbols = { added = icons.git.Add, modified = icons.git.Mod, removed = icons.git.Remove },
-  diff_color = {
-    added = { fg = colors.green },
-    modified = { fg = colors.orange },
-    removed = { fg = colors.red },
-  },
-  cond = conditions.hide_in_width,
-}
-
-ins_right {
-  function()
-    local current_line = vim.fn.line(".")
-    local total_lines = vim.fn.line("$")
-    local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-    local line_ratio = current_line / total_lines
-    local index = math.ceil(line_ratio * #chars)
-    return chars[index]
-  end,
-  color = { fg = colors.orange, gui = "bold" }
-}
-
-ins_right {
-  function()
-    return "▊"
-  end,
-  color = { fg = colors.blue },
-  padding = { left = 1 },
 }
 
 -- Now don't forget to initialize lualine

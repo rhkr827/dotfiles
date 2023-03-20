@@ -42,4 +42,8 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 vim.opt.formatoptions:append { 'r' }
 
 -- Set theme
-vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme github_dimmed")
+
+-- Set Float Colorscheme due to broken if transparent mode on
+-- vim.api.nvim_set_hl(0, 'FloatingShadow', { bg = '#1E2228' })
+-- vim.api.nvim_set_hl(0, 'FloatingShadowThrough', { bg = '#1E2228' })

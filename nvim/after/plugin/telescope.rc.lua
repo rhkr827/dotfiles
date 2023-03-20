@@ -49,12 +49,6 @@ telescope.setup {
         { "Vertical Right", ":vsp | terminal", 1 },
       },
       {
-        "Notes",
-        { "Browse Notes",      "lua require'joel.telescope'.browse_notes()", 1 },
-        { "Find Notes",        "lua require'joel.telescope'.find_notes()",   1 },
-        { "Search/Grep Notes", "lua require'joel.telescope'.grep_notes()",   1 },
-      },
-      {
         "Toggle",
         { "cursor line",         ":set cursorline!" },
         { "cursor column",       ":set cursorcolumn!" },
@@ -74,7 +68,6 @@ telescope.setup {
         { "keymaps",         ":lua require('telescope.builtin').keymaps()" },
         { "buffers",         ":Telescope buffers" },
         { "search history",  ":lua require('telescope.builtin').search_history()" },
-        { "Search TODOS",    ":lua require'joel.telescope'.search_todos()" },
       },
     },
   },

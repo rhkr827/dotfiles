@@ -12,7 +12,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
     "clone",
     "--depth",
     "1",
-    "https://github.com/wbthomason/packer.nvim",
     install_path,
   }
 end
@@ -37,9 +36,12 @@ packer.startup(function(use)
   use 'folke/which-key.nvim'
   use 'rcarriga/nvim-notify'      -- GUI style notification
   use 'ahmedkhalf/project.nvim'
-  use 'nicknisi/dotfiles'
-  use 'gelguy/wilder.nvim'     -- cmdline autocomplete
-  use 'EdenEast/nightfox.nvim' --theme
+  use 'gelguy/wilder.nvim'        -- cmdline autocomplete
+  use 'akinsho/bufferline.nvim'
+
+  -- Theme
+  use({ 'projekt0n/github-nvim-theme', tag = 'v0.0.7' })
+  use 'tribela/vim-transparent'
 
   -- CMP (Completion)
   use 'hrsh7th/cmp-buffer'   -- nvim-cmp source for buffer words
@@ -91,6 +93,7 @@ packer.startup(function(use)
 
   -- git
   use 'lewis6991/gitsigns.nvim'
+  use 'dinhhuy258/git.nvim'
 
   -- DAP
   use { 'mfussenegger/nvim-dap',
@@ -119,9 +122,6 @@ packer.startup(function(use)
   use 'SirVer/ultisnips'        -- snippet insertion
 
   if PACKER_BOOTSTRAP then
-    print('Changed plugins. Execute PackerSync')
     require("packer").sync()
-  else
-    print('None of changed plugins.')
   end
 end)

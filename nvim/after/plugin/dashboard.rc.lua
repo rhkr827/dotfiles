@@ -4,9 +4,6 @@ if (not status) then
   return
 end
 
-local config = 'D:/Repository/dotfiles/'
-local nvim_init = 'nvim/init.lua'
-
 db.setup({
   theme = "hyper",
   config = {
@@ -36,7 +33,7 @@ db.setup({
       {
         desc = " dotfiles",
         group = "Number",
-        action = "e " .. config .. nvim_init,
+        action = "lua require'config.telescope'.nvim_config()",
         key = "d",
       },
     },

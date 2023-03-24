@@ -64,7 +64,7 @@ Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -Skip
   > Same command 'ln' in Linux system
 
 ```powershell
- New-Item -ItemType SymbolicLink -Path "C:\Users\user\AppData\Local\nvim" -Target "D:\Repository\dotfile\nvim"
+ New-Item -ItemType SymbolicLink -Path "C:\Users\user\AppData\Local\nvim" -Target "C:\Users\user\.config\nvim"
 ```
 
 - Plugins Configuration

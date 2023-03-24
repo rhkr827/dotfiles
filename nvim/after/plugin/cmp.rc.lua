@@ -31,23 +31,34 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
+    ['<cr>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true
     }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'buffer' },
+    { name = 'ultisnips' },
+    {
+      name = 'buffer',
+      option = {
+        get_bufnrs = function()
+          return vim.api.nvim_list_bufs()
+        end
+      }
+    },
   }),
   formatting = {
     format = lspkind.cmp_format({
-      maxwidth = 50,
       before = function(entry, vim_item)
         vim_item = formatForTailwindCSS(entry, vim_item)
         return vim_item
       end
     })
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   }
 })
 

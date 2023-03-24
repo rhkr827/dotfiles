@@ -24,21 +24,9 @@ dapui.setup({
     },
   },
   layouts = {
-    -- {
-    --   elements = {
-    --     -- "watches",
-    --     -- "scopes",
-    --     -- "stacks",
-    --     -- "breakpoints",
-    --   },
-    --   size = 80,
-    --   position = "left",
-    -- },
-    {
-      elements = { "console", "repl" },
-      size = 0.30,
-      position = "bottom",
-    },
+    elements = { "console", "repl" },
+    size = 0.30,
+    position = "bottom",
   },
   render = {
     max_value_lines = 3,
@@ -60,6 +48,9 @@ for keys, mapping in pairs(mappings) do
   vim.api.nvim_set_keymap("n", keys, "", { callback = mapping, noremap = true })
 end
 
+-- Log Level
+dap.set_log_level('TRACE')
+
 -- DAP Apapters
 dap.adapters.python = {
   type = 'executable',
@@ -69,39 +60,24 @@ dap.adapters.python = {
 
 dap.adapters.coreclr = {
   type = 'executable',
-  command = vim.fn.stdpath('data') .. '/mason/bin/netcoredbg',
+  command = vim.fn.stdpath('data') .. '/mason/packages/netcoredbg/netcoredbg/netcoredbg.exe',
   args = { '--interpreter=vscode' }
 }
 
 dap.adapters.dart = {
   type = "executable",
   command = "node",
-  args = { vim.fn.stdpath('data') .. "/mason/bin/dart-debug-adapter",
+  args = { vim.fn.stdpath('data') .. "/mason/bin/dart-debug-adapter.cmd",
     "flutter" }
-}
-
-dap.adapters.lldb = {
-  type = 'executable',
-  command = vim.fn.stdpath('data') .. '/mason/bin/OpenDebugAD7',
-  args = { '--interpreter=vscode' }
 }
 
 dap.adapters.codelldb = {
   type = 'executable',
-  command = vim.fn.stdpath('data') .. '/mason/package/codelldb/extentions/adapter/codelldb',
-  args = { '--interpreter=vscode' }
+  command = vim.fn.stdpath('data') .. '/mason/packages/codelldb/extension/adapter/codelldb.exe',
 }
-
-dap.adapters.dart = {
-  type = "executable",
-  command = "node",
-  args = { vim.fn.stdpath('data') .. "/mason/bin/dart-debug-adapter",
-    "flutter" }
-}
-
 
 dap.adapters.cpp = dap.adapters.codelldb
-dap.adapters.rust = dap.adapters.lldb
+dap.adapters.rust = dap.adapters.codelldb
 
 -- DAP Configurations
 
@@ -132,6 +108,7 @@ dap.configurations.cs = {
     type = "coreclr",
     name = "launch - netcoredbg",
     request = "launch",
+    console = "integratedTerminal",
     program = function()
       return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
     end,
@@ -180,8 +157,20 @@ dap.configurations.cpp = {
     console = "integratedTerminal",
   },
 }
--- If you want to use this for Rust and C, add something like this:
-dap.configurations.rust = dap.configurations.cpp
+
+dap.configurations.rust = {
+  {
+    name = "Rust debug",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = true,
+    console = "integratedTerminal",
+  },
+}
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()

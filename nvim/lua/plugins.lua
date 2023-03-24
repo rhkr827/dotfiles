@@ -95,7 +95,7 @@ packer.startup(function(use)
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim'
 
-  -- DAP
+  -- Degugging
   use { 'mfussenegger/nvim-dap',
     requires = {
       'theHamsta/nvim-dap-virtual-text',
@@ -107,10 +107,16 @@ packer.startup(function(use)
     run = function() vim.fn['mkdp#util#install']() end,
   })
 
-  -- c++ development
+  use 'vim-test/vim-test'
+
+  -- c++
   use 'Civitasv/cmake-tools.nvim'
   use 'alepez/vim-gtest'
   use 'rhysd/vim-clang-format'
+
+  -- rust
+  use 'rust-lang/rust.vim'
+  use 'simrat39/rust-tools.nvim'
 
   -- support development
   use 'tpope/vim-commentary'

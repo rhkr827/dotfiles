@@ -2,7 +2,7 @@ local status, notify = pcall(require, "notify")
 if (not status) then return end
 
 notify.setup({
-  background_colour = "Normal",
+  background_colour = "#000000",
   fps = 30,
   icons = {
     DEBUG = "",

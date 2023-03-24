@@ -141,11 +141,6 @@ nvim_lsp.cmake.setup {
   capabilities = capabilities
 }
 
-nvim_lsp.cmake.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
-
 nvim_lsp.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities
@@ -162,6 +157,29 @@ nvim_lsp.dartls.setup {
   on_attach = on_attach,
   capabilities = capabilities
 }
+
+--rust
+nvim_lsp.rust_analyzer.setup({
+  on_attach = on_attach,
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true
+      },
+    }
+  }
+})
 
 -- Diagnostic symbols in the sign column (gutter)
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }

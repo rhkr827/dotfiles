@@ -40,16 +40,17 @@ M.project_files = function()
   fopts.file_ignore_patterns = {
     ".local/",
     ".cache/",
+    ".cargo/",
     "Downloads/",
     ".git/",
-    "Library/.*",
-    ".rustup/.*",
-    "node_modules/.*",
-    "env/.*",
-    "build/.*",
-    "bin/.*",
-    "obj/.*",
-    "Debug/.*"
+    "Library/",
+    ".rustup/",
+    "node_modules/",
+    "env/",
+    "build/",
+    "bin/",
+    "obj/",
+    "Debug/"
   }
 
   if ret == 0 then

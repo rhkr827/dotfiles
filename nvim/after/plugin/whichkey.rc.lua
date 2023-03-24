@@ -51,7 +51,7 @@ local mappings = {
     r = { "<cmd>CMakeRun<cr>", "CMake Run" },
     d = { "<cmd>CMakeDebug<cr>", "CMake Debug" },
     i = { "<cmd>CMakeInstall<cr>", "CMake Install" },
-    C = { "<cmd>CMakeClean<cr>", "CMake Clean" },
+    c = { "<cmd>CMakeClean<cr>", "CMake Clean" },
     s = { "<cmd>CMakeStop<cr>", "CMake Stop" },
   },
   d = {

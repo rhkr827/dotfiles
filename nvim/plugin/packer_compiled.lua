@@ -234,6 +234,16 @@ _G.packer_plugins = {
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\project.nvim",
     url = "https://github.com/ahmedkhalf/project.nvim"
   },
+  ["rust-tools.nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\rust-tools.nvim",
+    url = "https://github.com/simrat39/rust-tools.nvim"
+  },
+  ["rust.vim"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\rust.vim",
+    url = "https://github.com/rust-lang/rust.vim"
+  },
   tagbar = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\tagbar",
@@ -308,6 +318,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-gtest",
     url = "https://github.com/alepez/vim-gtest"
+  },
+  ["vim-test"] = {
+    loaded = true,
+    path = "C:\\Users\\user\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-test",
+    url = "https://github.com/vim-test/vim-test"
   },
   ["vim-transparent"] = {
     loaded = true,

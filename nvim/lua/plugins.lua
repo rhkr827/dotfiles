@@ -7,20 +7,33 @@ end
 local fn = vim.fn
 local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = fn.system {
+  PACKER_BOOTSTRAP = fn.system({
     "git",
     "clone",
     "--depth",
     "1",
+    "https://github.com/wbthomason/packer.nvim",
     install_path,
-  }
+  })
+  print("Installing packer close and reopen Neovim...")
+  vim.cmd([[packadd packer.nvim]])
 end
 
-vim.api.nvim_create_augroup("SyncPackerPlugins", {})
-vim.api.nvim_create_autocmd(
-  "BufWritePost",
-  { command = "source <afile> | PackerSync", pattern = "plugins.lua", group = "SyncPackerPlugins" }
-)
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]])
+
+packer.init({
+  display = {
+    open_fn = function()
+      return require("packer.util").float({ border = "rounded" })
+    end,
+  },
+})
+
 
 packer.startup(function(use)
   -- Plugin Installer
@@ -102,12 +115,12 @@ packer.startup(function(use)
       'rcarriga/nvim-dap-ui', }
   }
 
+  -- Markdown
+  use 'SidOfc/mkdx'
   use({
     'iamcco/markdown-preview.nvim',
     run = function() vim.fn['mkdp#util#install']() end,
   })
-
-  use 'vim-test/vim-test'
 
   -- c++
   use 'Civitasv/cmake-tools.nvim'
@@ -125,7 +138,7 @@ packer.startup(function(use)
   use 'preservim/tagbar'        -- overview of currentf file's structure
   use 'akinsho/toggleterm.nvim' -- toggle terminal
   use 'wakatime/vim-wakatime'
-  use 'SirVer/ultisnips'        -- snippet insertion
+  use 'jxnblk/vim-mdx-js'       -- support mdx
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()

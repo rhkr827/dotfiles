@@ -86,7 +86,7 @@ $USR_PROFILE = "powershell\user_profile.ps1"
   > Same command 'ln' in Linux system
 
 ```powershell
- New-Item -ItemType SymbolicLink -Path "C:\Users\user\AppData\Local\nvim" -Target "C:\Users\user\.config\nvim"
+ New-Item -ItemType SymbolicLink -Path $HOME\AppData\Local\nvim -Target $HOME\.config\nvim
 ```
 
 - Plugins Configuration

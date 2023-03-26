@@ -6,6 +6,45 @@
 > Configuration for better Powershell using oh-my-posh and packages
 
 - Install NerdFont - Hack NF
+
+- Install scoop
+
+```powershell
+iwr -useb get.scoop.sh | iex
+```
+
+- Install packages via scoop
+```powershell
+scoop install curl sudo jq neovim gcc
+```
+
+- Install packages via Install-Module
+
+> posh-git
+```powershell
+Install-Module posh-git -Scope CurrentUser -Force
+```
+
+> oh-my-push
+```powershell
+winget install JanDeDobbeleer.OhMyPosh -s wingetp
+```
+
+> Terminal-Icons
+```powershell
+Install-Module -Name Terminal-Icons -Repository PSGallery -Force
+```
+
+> PSFzf
+```powershell
+Install-Module -Name PSFzf -Scope CurrentUser -Force
+```
+
+> PSReadLine
+```powershell
+Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -SkipPublisherCheck
+```
+
 - Setting to excuting user_profile.ps1 when startup
 
 ```powershell
@@ -19,23 +58,6 @@ then copy below
 $CONFIG_PATH = {your path} ex) "D:\Repository\dotfiles\"
 $USR_PROFILE = "powershell\user_profile.ps1"
 . $CONFIG_PATH$USR_PROFILE
-```
-
-- Install scoop and packages via scoop
-
-```powershell
-iwr -useb get.scoop.sh | iex
-scoop install curl sudo jq neovim gcc
-```
-
-- Install packages via Install-Module
-
-```powershell
-Install-Module posh-git -Scope CurrentUser -Force
-Install-Module oh-my-posh -Scope CurrentUser -Force
-Install-Module -Name Terminal-Icons -Repository PSGallery -Force
-Install-Module -Name PSFzf -Scope CurrentUser -Force
-Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -SkipPublisherCheck
 ```
 
 ### Neovim

@@ -89,6 +89,11 @@ $USR_PROFILE = "powershell\user_profile.ps1"
  New-Item -ItemType SymbolicLink -Path $HOME\AppData\Local\nvim -Target $HOME\.config\nvim
 ```
 
+- Install Packer
+```powershell
+git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
+```
+
 - Plugins Configuration
 
 | Plugins    | Configuration                                                      |
@@ -105,4 +110,4 @@ $USR_PROFILE = "powershell\user_profile.ps1"
 | ToggleTerm | Set keymap on map config. Using Powershell Preview 7(pwsh)         |
 | treesitter | Add languages to ensure_installed                                  |
 | WhichKey   | Cleanup keymaps on own config files and set to WhichKey            |
-| Theme      | Using 'nightfox'                                                   |
+| Theme      | Using 'github-theme dimmed'                                        |

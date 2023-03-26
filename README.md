@@ -54,7 +54,7 @@ vim $PROFILE.CurrentUserCurrentHost
 then copy below
 
 ```powershell
-# $CONFIG_PATH = $env:USERPROFILE\
+# . $env:USERPROFILE\.config\powershell\user_profile.ps1
 $CONFIG_PATH = {your path} ex) "D:\Repository\dotfiles\"
 $USR_PROFILE = "powershell\user_profile.ps1"
 . $CONFIG_PATH$USR_PROFILE

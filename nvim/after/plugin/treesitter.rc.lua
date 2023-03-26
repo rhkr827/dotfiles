@@ -23,7 +23,6 @@ ts.setup {
     "cmake",
     "cpp",
     'c_sharp',
-    'dockerfile',
     'graphql',
     'rust',
   },

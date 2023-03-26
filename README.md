@@ -14,35 +14,47 @@ iwr -useb get.scoop.sh | iex
 ```
 
 - Install packages via scoop
+
 ```powershell
-scoop install curl sudo jq neovim gcc fzf
+scoop install curl sudo jq neovim gcc fzf wget unzip
 ```
 
 - Install packages via Install-Module
 
 > posh-git
+
 ```powershell
 Install-Module posh-git -Scope CurrentUser -Force
 ```
 
 > oh-my-push
+
 ```powershell
 winget install JanDeDobbeleer.OhMyPosh -s wingetp
 ```
 
 > Terminal-Icons
+
 ```powershell
 Install-Module -Name Terminal-Icons -Repository PSGallery -Force
 ```
 
 > PSFzf
+
 ```powershell
 Install-Module -Name PSFzf -Scope CurrentUser -Force
 ```
 
 > PSReadLine
+
 ```powershell
 Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -SkipPublisherCheck
+```
+
+> z jumper
+
+```powershell
+Install-Module z -Force
 ```
 
 - Setting to excuting user_profile.ps1 when startup
@@ -90,8 +102,48 @@ $USR_PROFILE = "powershell\user_profile.ps1"
 ```
 
 - Install Packer
+
 ```powershell
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
+```
+
+- Install Node.js
+  > Windows
+
+```powershell
+winget install OpenJS.NodeJS
+```
+
+> Linux
+
+```fish
+brew install nodejs
+```
+
+- Install lua-language-server
+  > Windows
+
+```powershell
+scoop install lua-language-server
+```
+
+> Linux
+
+```fish
+brew install lua-language-server
+```
+
+- Install tree-sitter
+  > Windows
+
+```powershell
+scoop install tree-sitter
+```
+
+> Linux
+
+```fish
+brew install tree-sitter
 ```
 
 - Plugins Configuration

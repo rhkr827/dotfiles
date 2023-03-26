@@ -42,7 +42,10 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 vim.opt.formatoptions:append { 'r' }
 
 -- Set theme
-vim.cmd("colorscheme github_dimmed")
+status, _ = pcall(require, "github-theme")
+if status then
+  vim.cmd("colorscheme github_dimmed")
+end
 
 -- Format on Save
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]

@@ -15,7 +15,7 @@ iwr -useb get.scoop.sh | iex
 
 - Install packages via scoop
 ```powershell
-scoop install curl sudo jq neovim gcc
+scoop install curl sudo jq neovim gcc fzf
 ```
 
 - Install packages via Install-Module

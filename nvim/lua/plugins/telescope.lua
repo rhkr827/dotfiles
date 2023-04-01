@@ -2,6 +2,13 @@ return {
 	-- fuzzy finder
 	{
 		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			{ "nvim-telescope/telescope-project.nvim" },
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+			},
+		},
 		cmd = "Telescope",
 		version = false, -- telescope did only one release, so use HEAD for now
 		keys = {
@@ -128,5 +135,8 @@ return {
 				},
 			},
 		},
+		config = function()
+			require("telescope").load_extension("project")
+		end,
 	},
 }

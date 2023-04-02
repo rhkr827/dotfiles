@@ -17,197 +17,203 @@ return {
 			{ "p00f/clangd_extensions.nvim" },
 			{ "simrat39/rust-tools.nvim" },
 		},
+		config = function()
+			local nvim_lsp = require("lspconfig")
+			local protocol = require('vim.lsp.protocol')
 
-		---@class PluginLspOpts
-		opts = {
-			-- options for vim.diagnostic.config()
-			diagnostics = {
-				underline = true,
-				update_in_insert = false,
-				virtual_text = { spacing = 4, prefix = "●" },
-				severity_sort = true,
-			},
-			-- Automatically format on save
-			autoformat = true,
-			-- options for vim.lsp.buf.format
-			-- `bufnr` and `filter` is handled by the LazyVim formatter,
-			-- but can be also overridden when specified
-			format = {
-				formatting_options = nil,
-				timeout_ms = nil,
-			},
-			-- LSP Server Settings
-			---@type lspconfig.options
-			servers = {
-				jsonls = {},
-				lua_ls = {
-					-- mason = false, -- set to false if you don't want this server to be installed with mason
-					settings = {
-						Lua = {
-							workspace = {
-								checkThirdParty = false,
-							},
-							completion = {
-								callSnippet = "Replace",
-							},
+			local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
+			local enable_format_on_save = function(_, bufnr)
+				vim.api.nvim_clear_autocmds({ group = augroup_format, buffer = bufnr })
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					group = augroup_format,
+					buffer = bufnr,
+					callback = function()
+						vim.lsp.buf.format({ bufnr = bufnr })
+					end,
+				})
+			end
+			
+			-- Use an on_attach function to only map the following keys
+			-- after the language server attaches to the current buffer
+			local on_attach = function(client, bufnr)
+				local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+			
+				--Enable completion triggered by <c-x><c-o>
+				--local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+				--buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+			
+				-- Mappings.
+				local opts = { noremap = true, silent = true }
+			
+				-- See `:help vim.lsp.*` for documentation on any of the below functions
+				buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+				--buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+				buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+				--buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+			end
+			
+			protocol.CompletionItemKind = {
+				'', -- Text
+				'', -- Method
+				'', -- Function
+				'', -- Constructor
+				'', -- Field
+				'', -- Variable
+				'', -- Class
+				'ﰮ', -- Interface
+				'', -- Module
+				'', -- Property
+				'', -- Unit
+				'', -- Value
+				'', -- Enum
+				'', -- Keyword
+				'﬌', -- Snippet
+				'', -- Color
+				'', -- File
+				'', -- Reference
+				'', -- Folder
+				'', -- EnumMember
+				'', -- Constant
+				'', -- Struct
+				'', -- Event
+				'ﬦ', -- Operator
+				'', -- TypeParameter
+			}
+			
+			-- Set up completion using nvim_cmp with LSP source
+			local capabilities = require('cmp_nvim_lsp').default_capabilities()
+			
+			nvim_lsp.flow.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			nvim_lsp.tsserver.setup {
+				on_attach = on_attach,
+				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+				cmd = { "typescript-language-server", "--stdio" },
+				capabilities = capabilities
+			}
+			
+			nvim_lsp.sourcekit.setup {
+				on_attach = on_attach,
+				capabilities = capabilities,
+			}
+			
+			nvim_lsp.lua_ls.setup {
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
+					enable_format_on_save(client, bufnr)
+				end,
+				settings = {
+					Lua = {
+						diagnostics = {
+							-- Get the language server to recognize the `vim` global
+							globals = { 'vim' },
+						},
+						workspace = {
+							-- Make the server aware of Neovim runtime files
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false
 						},
 					},
 				},
-			},
-			-- you can do any additional lsp server setup here
-			-- return true if you don't want this server to be setup with lspconfig
-			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-			setup = {
-				-- example to setup with typescript.nvim
-				-- tsserver = function(_, opts)
-				--   require("typescript").setup({ server = opts })
-				--   return true
-				-- end,
-				-- Specify * to use this function as a fallback for any server
-				-- ["*"] = function(server, opts) end,
-			},
-		},
-		---@param opts PluginLspOpts
-		config = function(_, opts)
-			-- setup autoformat
-			require("lazyvim.plugins.lsp.format").autoformat = opts.autoformat
-			-- setup formatting and keymaps
-			require("lazyvim.util").on_attach(function(client, buffer)
-				require("lazyvim.plugins.lsp.format").on_attach(client, buffer)
-				require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
-			end)
-
-			-- diagnostics
-			for name, icon in pairs(require("lazyvim.config").icons.diagnostics) do
-				name = "DiagnosticSign" .. name
-				vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-			end
-			vim.diagnostic.config(opts.diagnostics)
-
-			local servers = opts.servers
-			local capabilities =
-				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-			local function setup(server)
-				local server_opts = vim.tbl_deep_extend("force", {
-					capabilities = vim.deepcopy(capabilities),
-				}, servers[server] or {})
-
-				if opts.setup[server] then
-					if opts.setup[server](server, server_opts) then
-						return
-					end
-				elseif opts.setup["*"] then
-					if opts.setup["*"](server, server_opts) then
-						return
-					end
-				end
-				require("lspconfig")[server].setup(server_opts)
-			end
-
-			-- get all the servers that are available thourgh mason-lspconfig
-			local have_mason, mlsp = pcall(require, "mason-lspconfig")
-			local all_mslp_servers = {}
-			if have_mason then
-				all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-			end
-
-			local ensure_installed = {} ---@type string[]
-			for server, server_opts in pairs(servers) do
-				if server_opts then
-					server_opts = server_opts == true and {} or server_opts
-					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-					if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-						setup(server)
-					else
-						ensure_installed[#ensure_installed + 1] = server
-					end
-				end
-			end
-
-			if have_mason then
-				mlsp.setup({ ensure_installed = ensure_installed })
-				mlsp.setup_handlers({ setup })
-			end
-		end,
-	},
-
-	-- formatters
-	{
-		"jose-elias-alvarez/null-ls.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "mason.nvim" },
-		config = function()
-			local null_ls = require("null-ls")
-			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-			local lsp_formatting = function(bufnr)
-				vim.lsp.buf.format({
-					filter = function(client)
-						return client.name == "null-ls"
-					end,
-					bufnr = bufnr,
-				})
-			end
-
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.prettierd,
-					null_ls.builtins.diagnostics.eslint_d.with({
-						diagnostics_format = "[eslint] #{m}\n(#{c})",
-					}),
-					null_ls.builtins.diagnostics.fish,
-				},
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
-							buffer = bufnr,
-							callback = function()
-								lsp_formatting(bufnr)
-							end,
-						})
-					end
-				end,
+			}
+			
+			nvim_lsp.tailwindcss.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			nvim_lsp.cssls.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			nvim_lsp.astro.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+				vim.lsp.diagnostic.on_publish_diagnostics, {
+					underline = true,
+					update_in_insert = false,
+					virtual_text = { spacing = 4, prefix = "●" },
+					severity_sort = true,
+				}
+			)
+			
+			-- python
+			nvim_lsp.pyright.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			-- c++
+			nvim_lsp.cmake.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			nvim_lsp.clangd.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			-- csharp
+			nvim_lsp.csharp_ls.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			-- dart
+			nvim_lsp.dartls.setup {
+				on_attach = on_attach,
+				capabilities = capabilities
+			}
+			
+			--rust
+			nvim_lsp.rust_analyzer.setup({
+				on_attach = on_attach,
+				settings = {
+					["rust-analyzer"] = {
+						imports = {
+							granularity = {
+								group = "module",
+							},
+							prefix = "self",
+						},
+						cargo = {
+							buildScripts = {
+								enable = true,
+							},
+						},
+						procMacro = {
+							enable = true
+						},
+					}
+				}
 			})
-
-			vim.api.nvim_create_user_command("DisableLspFormatting", function()
-				vim.api.nvim_clear_autocmds({ group = augroup, buffer = 0 })
-			end, { nargs = 0 })
-		end,
-	},
-
-	-- cmdline tools and lsp servers
-	{
-
-		"williamboman/mason.nvim",
-		cmd = "Mason",
-		keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-		opts = {
-			ensure_installed = {
-				"stylua",
-				"shfmt",
-				-- "flake8",
-			},
-		},
-		---@param opts MasonSettings | {ensure_installed: string[]}
-		config = function(_, opts)
-			require("mason").setup(opts)
-			local mr = require("mason-registry")
-			local function ensure_installed()
-				for _, tool in ipairs(opts.ensure_installed) do
-					local p = mr.get_package(tool)
-					if not p:is_installed() then
-						p:install()
-					end
-				end
+			
+			-- Diagnostic symbols in the sign column (gutter)
+			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 			end
-			if mr.refresh then
-				mr.refresh(ensure_installed)
-			else
-				ensure_installed()
-			end
-		end,
+			
+			vim.diagnostic.config({
+				virtual_text = {
+					prefix = '●'
+				},
+				update_in_insert = true,
+				float = {
+					source = "always", -- Or "if_many"
+				},
+			})
+			
+		end
 	},
 }

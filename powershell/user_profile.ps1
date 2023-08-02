@@ -11,6 +11,7 @@ Import-Module -Name Terminal-Icons
 
 # Alias
 Set-Alias vim nvim
+Set-Alias sysenv SystemPropertiesAdvanced
 
 # PSReadLine
 Set-PSReadLineOption -EditMode Emacs

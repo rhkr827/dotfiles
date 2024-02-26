@@ -30,7 +30,7 @@ Install-Module posh-git -Scope CurrentUser -Force
 > oh-my-push
 
 ```powershell
-winget install JanDeDobbeleer.OhMyPosh -s wingetp
+winget install JanDeDobbeleer.OhMyPosh -s winget
 ```
 
 > Terminal-Icons

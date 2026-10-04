@@ -1,165 +1,47 @@
-# My dotfiles Settings
+# Windows PowerShell Oh-My-Posh Dotfiles
 
-### Powershell
+Windows PowerShell 7 환경을 위한 **Oh My Posh 테마 및 생산성 설정**입니다.
 
-> Refererenced from devaslife dotfiles
-> Configuration for better Powershell using oh-my-posh and packages
+---
 
-- Install NerdFont - Hack NF
+## ⚡ 빠른 시작 (1-Click 설치)
 
-- Install scoop
+### 방법 1: 배치 파일 실행
+`setup_theme.bat` 파일을 우클릭하여 **[관리자 권한으로 실행]** 또는 더블 클릭하여 실행합니다.
 
-```powershell
-iwr -useb get.scoop.sh | iex
-```
-
-- Install packages via scoop
+### 방법 2: PowerShell 스크립트 실행
+PowerShell 콘솔에서 다음 명령어를 실행합니다:
 
 ```powershell
-scoop install curl sudo jq neovim gcc fzf wget unzip
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup_theme.ps1
 ```
 
-- Install packages via Install-Module
+---
 
-> posh-git
+## 📦 구성 요소
+
+1. **Oh My Posh 테마 (`powershell/my.omp.json`)**
+   - 세련된 다이아몬드/파워라인 스타일 프롬프트
+   - Git 브랜치, 변경/스테이징 상태 실시간 표시
+   - 실행 시간 및 디렉터리 경로 최적화
+
+2. **PowerShell 프로필 (`powershell/user_profile.ps1`)**
+   - **posh-git**: Git 명령어 자동완성 및 상태 표시
+   - **Terminal-Icons**: 폴더 및 파일 확장자별 아이콘 렌더링
+   - **PSFzf**: 퍼지 검색 (`Ctrl+F`: 파일 검색, `Ctrl+R`: 명령어 히스토리 검색)
+   - **PSReadLine**: Emacs 스타일 키바인딩 (`Ctrl+D`: 글자 삭제), 히스토리 자동완성 제안
+   - **which 함수**: 리눅스 스타일 명령어 경로 조회 유틸리티
+
+---
+
+## 🔤 권장 폰트 (Nerd Font)
+
+프롬프트의 특수 아이콘(Git, 폴더 아이콘 등)이 정상 표시되려면 **Nerd Font**가 필요합니다.
 
 ```powershell
-Install-Module posh-git -Scope CurrentUser -Force
+oh-my-posh font install
+# Meslo 또는 Hack Nerd Font 선택 권장
 ```
 
-> oh-my-push
-
-```powershell
-winget install JanDeDobbeleer.OhMyPosh -s winget
-```
-
-> Terminal-Icons
-
-```powershell
-Install-Module -Name Terminal-Icons -Repository PSGallery -Force
-```
-
-> PSFzf
-
-```powershell
-Install-Module -Name PSFzf -Scope CurrentUser -Force
-```
-
-> PSReadLine
-
-```powershell
-Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -SkipPublisherCheck
-```
-
-> z jumper
-
-```powershell
-Install-Module z -Force
-```
-
-- Setting to excuting user_profile.ps1 when startup
-
-```powershell
-vim $PROFILE.CurrentUserCurrentHost
-```
-
-then copy below
-
-```powershell
-# . $env:USERPROFILE\.config\powershell\user_profile.ps1
-$CONFIG_PATH = {your path} ex) "D:\Repository\dotfiles\"
-$USR_PROFILE = "powershell\user_profile.ps1"
-. $CONFIG_PATH$USR_PROFILE
-```
-
-### Neovim
-
-> Modified Configuration based on devaslife dotfiles
-> Configuration Neovim supporting develop including debugging below languages
-
-![typescript](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/typescript.svg)
-![markdown](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/markdown.svg)
-![dotnet](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/.net.svg)
-![cpp](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/cpp.svg)
-![python](https://raw.githubusercontent.com/rhkr827/MyBadgeMaker/e69f02a2494f4d2cf1bad1173d5cdde7cde2e86c/badge/python.svg)
-
-> Configured
-
-| Lanuages | LSP | DAP    |
-| -------- | --- | ------ |
-| Python   | SET | TESTED |
-| CMake    | SET | TBD    |
-| C++      | SET | SET    |
-| Dotnet   | SET | SET    |
-| Rust     | SET | SET    |
-| Dart     | SET | TBD    |
-
-- Make Sync between paths
-  > Same command 'ln' in Linux system
-
-```powershell
- New-Item -ItemType SymbolicLink -Path $HOME\AppData\Local\nvim -Target $HOME\.config\nvim
-```
-
-- Install Packer
-
-```powershell
-git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
-```
-
-- Install Node.js
-  > Windows
-
-```powershell
-winget install OpenJS.NodeJS
-```
-
-> Linux
-
-```fish
-brew install nodejs
-```
-
-- Install lua-language-server
-  > Windows
-
-```powershell
-scoop install lua-language-server
-```
-
-> Linux
-
-```fish
-brew install lua-language-server
-```
-
-- Install tree-sitter
-  > Windows
-
-```powershell
-scoop install tree-sitter
-```
-
-> Linux
-
-```fish
-brew install tree-sitter
-```
-
-- Plugins Configuration
-
-| Plugins    | Configuration                                                      |
-| ---------- | ------------------------------------------------------------------ |
-| LSP        | Not fixed                                                          |
-| Mason      | Install LSP, Lint, DAP and Formatter for supporting languages      |
-| Telescope  | Set ignore file name pattern. Set keymap on WhichKey               |
-| DAP        | Set keymap on dap config. Set to same as Visual Studio             |
-| DAP UI     | Set keymap on WhichKey                                             |
-| CMake      | Set keymap on WhichKey                                             |
-| CMD Line   | Set Auto Completion and center floating. Using 'Widler' Plugin     |
-| Dashboard  | Set keymap on WhichKey. Modify shortcut and hide Recent Projects   |
-| NvimTree   | Set keymap on map config. Apply center floating and quit via <ESC> |
-| ToggleTerm | Set keymap on map config. Using Powershell Preview 7(pwsh)         |
-| treesitter | Add languages to ensure_installed                                  |
-| WhichKey   | Cleanup keymaps on own config files and set to WhichKey            |
-| Theme      | Using 'github-theme dimmed'                                        |
+설치 후 Windows Terminal 설정에서 기본 글꼴을 설치한 Nerd Font로 지정해 주세요.
